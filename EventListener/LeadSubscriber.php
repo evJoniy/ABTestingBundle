@@ -25,8 +25,13 @@ class LeadSubscriber implements EventSubscriberInterface
      */
     public function onTimelineGenerate(LeadEvent $event)
     {
-        $event->setLead(
-            $event->getLead()->addUpdatedField('abtesting', (bool)rand(0, 1))
-        );
+        $lead = $event->getLead();
+
+        if (array_key_exists('abtesting', $lead->getChanges()['fields'])) {
+            $event->setLead(
+                $lead->addUpdatedField('abtesting', (bool)rand(0, 1))
+            );
+        }
     }
 }
+
